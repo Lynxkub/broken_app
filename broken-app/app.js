@@ -23,8 +23,13 @@ app.get('/users/:username' , async function(req , res , next) {
     if (resp.data.name === null){
       throw new ExpressError('User not found' , 404);
     }
+    if(resp.data.bio === null) {
+      let userData = ({name : resp.data.name , bio: `No Bio Created for ${resp.data.name}`})
+      return res.json(userData);
+    }else {
     let userData = ({name : resp.data.name , bio: resp.data.bio})
     return res.json(userData);
+    }
   }catch (err) {
     return next(err)
   }
@@ -32,7 +37,7 @@ app.get('/users/:username' , async function(req , res , next) {
 
 
 app.use(function(err , req , res , next) {
-  let status = err.status || 500;
+  let status = err.status || 404;
   let message = err.message;
   return res.status(status).json({
     error: {message , status}
@@ -42,3 +47,9 @@ app.use(function(err , req , res , next) {
 app.listen(3000 , function () {
   console.log('App on port 3000');
 });
+
+
+
+
+
+module.exports = app;

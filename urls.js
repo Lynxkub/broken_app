@@ -47,7 +47,6 @@ function readFile(path){
 async function urlCall(url) {
     try {
     let resp = await axios.get(`http://${url}`);
-    // console.log(resp.data)
     fs.writeFile(`${url}` , resp.data , {encoding : 'utf8' , flag : 'a'} , function(err) {
         if(err) {
             console.error(err);
